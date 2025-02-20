@@ -13,6 +13,10 @@ app.use(cors()); // Enable CORS
 app.use(morgan("dev")); // Logging
 dotenv.config();
 
+// Routes
+app.use("/api/auth", authRoute);
+app.use("/api/posts", postRoute);
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

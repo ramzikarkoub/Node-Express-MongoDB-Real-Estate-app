@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     avatar: String,
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },
-  { timestamps: true } // ✅ Handles createdAt and updatedAt automatically
+  { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
