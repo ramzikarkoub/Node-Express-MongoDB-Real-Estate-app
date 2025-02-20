@@ -6,14 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ramzikarkoub/Real-Estate---Node-Express-MongoDB.git"
-  },
   "author": "Ramzi Karkoub",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ramzikarkoub/Real-Estate---Node-Express-MongoDB/issues"
-  },
-  "homepage": "https://github.com/ramzikarkoub/Real-Estate---Node-Express-MongoDB#readme"
+  "license": "ISC"
 }
