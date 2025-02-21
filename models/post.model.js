@@ -1,7 +1,8 @@
+import mongoose from "mongoose"; // ✅ Make sure to import Mongoose
+
 const Type = ["buy", "rent"];
 const Property = ["apartment", "house", "condo", "land"];
 
-// Post Schema
 const postSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
@@ -30,4 +31,4 @@ const postSchema = new mongoose.Schema(
 
 const Post = mongoose.model("Post", postSchema);
 
-export { Post };
+export default Post;

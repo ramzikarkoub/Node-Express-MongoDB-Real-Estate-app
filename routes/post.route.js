@@ -1,4 +1,11 @@
 import express from "express";
+import {
+  addPost,
+  deletePost,
+  getPost,
+  getPosts,
+  updatePost,
+} from "../controllers/post.controller.js";
 const router = express.Router();
 
 router.get("/", getPosts); // Get all posts
