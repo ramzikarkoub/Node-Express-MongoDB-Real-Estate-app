@@ -2,13 +2,38 @@ import Post from "../models/post.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs";
 
-// GET ALL PROPERTY LISTINGS
-
+// GET ALL PROPERTY LISTINGS WITH FILTERING
 export const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate("userId", "username email");
+    const { location, type, property, minPrice, maxPrice, bedroom } = req.query;
+
+    const filters = {};
+
+    // Location (case-insensitive)
+    if (location) filters.city = { $regex: location, $options: "i" };
+
+    // Type (rent or buy)
+    if (type && type !== "any") filters.type = type;
+
+    // Property (apartment, house, condo, land)
+    if (property && property !== "any") filters.property = property;
+
+    // Price range
+    if (minPrice) filters.price = { $gte: Number(minPrice) };
+    if (maxPrice) filters.price = { ...filters.price, $lte: Number(maxPrice) };
+
+    // Number of bedrooms
+    if (bedroom) filters.bedroom = Number(bedroom);
+
+    // Fetch posts based on filters
+    const posts = await Post.find(filters);
+
+    if (posts.length === 0)
+      return res.status(200).json({ message: "No properties found." });
+
     res.status(200).json(posts);
   } catch (error) {
+    console.error("Error fetching posts:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
