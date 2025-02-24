@@ -2,9 +2,8 @@ import Post from "../models/post.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import fs from "fs";
 
-// ---------------------------------
 // GET ALL PROPERTY LISTINGS
-// ---------------------------------
+
 export const getPosts = async (req, res) => {
   try {
     const posts = await Post.find().populate("userId", "username email");
@@ -14,9 +13,8 @@ export const getPosts = async (req, res) => {
   }
 };
 
-// ---------------------------------
 // GET SINGLE PROPERTY LISTING BY ID
-// ---------------------------------
+
 export const getPost = async (req, res) => {
   const { id } = req.params;
 
@@ -30,9 +28,8 @@ export const getPost = async (req, res) => {
   }
 };
 
-// ---------------------------------
 // ADD NEW PROPERTY LISTING WITH CLOUDINARY IMAGES
-// ---------------------------------
+
 export const addPost = async (req, res) => {
   const {
     title,
@@ -44,15 +41,15 @@ export const addPost = async (req, res) => {
     type,
     property,
     postDetail,
-    imageUrls, // ✅ Array of Cloudinary image URLs
+    imageUrls, // Array of Cloudinary image URLs
   } = req.body;
 
   try {
-    // ✅ Create New Post
+    // Create New Post
     const newPost = new Post({
       title,
       price,
-      images: imageUrls, // ✅ Save Cloudinary URLs directly in MongoDB
+      images: imageUrls, // Save Cloudinary URLs directly in MongoDB
       address,
       city,
       bedroom,
@@ -60,7 +57,7 @@ export const addPost = async (req, res) => {
       type,
       property,
       postDetail,
-      userId: req.user.id, // ✅ User who created the post
+      userId: req.user.id, // User who created the post
     });
 
     await newPost.save();
@@ -73,16 +70,15 @@ export const addPost = async (req, res) => {
   }
 };
 
-// ---------------------------------
 // UPDATE PROPERTY LISTING
-// ---------------------------------
+
 export const updatePost = async (req, res) => {
   const { id } = req.params;
 
   try {
     const updatedPost = await Post.findByIdAndUpdate(id, req.body, {
-      new: true, // ✅ Return the updated document
-      runValidators: true, // ✅ Ensure validation is applied
+      new: true, // Return the updated document
+      runValidators: true, // Ensure validation is applied
     });
 
     if (!updatedPost)
@@ -96,9 +92,8 @@ export const updatePost = async (req, res) => {
   }
 };
 
-// ---------------------------------
 // DELETE PROPERTY LISTING AND CLOUDINARY IMAGES
-// ---------------------------------
+
 export const deletePost = async (req, res) => {
   const { id } = req.params;
 
@@ -106,7 +101,7 @@ export const deletePost = async (req, res) => {
     const post = await Post.findById(id);
     if (!post) return res.status(404).json({ message: "Post not found" });
 
-    // ✅ Delete Images from Cloudinary
+    // Delete Images from Cloudinary
     await Promise.all(
       post.images.map((url) => {
         const publicId = url.split("/").pop().split(".")[0]; // Extract public ID from URL

@@ -1,4 +1,4 @@
-import mongoose from "mongoose"; // ✅ Make sure to import Mongoose
+import mongoose from "mongoose";
 
 const Type = ["buy", "rent"];
 const Property = ["apartment", "house", "condo", "land"];
