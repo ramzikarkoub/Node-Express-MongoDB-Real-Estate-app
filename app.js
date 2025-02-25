@@ -14,7 +14,12 @@ app.use(cookieParser());
 
 // Middleware
 app.use(express.json()); // Parse JSON bodies
-app.use(cors()); // Enable CORS
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(morgan("dev")); // Logging
 dotenv.config();
 

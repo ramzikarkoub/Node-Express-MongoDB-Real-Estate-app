@@ -19,9 +19,23 @@ export const register = async (req, res) => {
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
     const { password: userPassword, ...userInfo } = newUser._doc;
+
+    // Generate JWT Token
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    //Store Token in HTTP-only Cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000, // 1 hour
+    });
+
+    // Send User Info Without Password
     res
       .status(201)
-      .json({ message: "User registered successfully", user: userInfo }); //  Send user info without password
+      .json({ message: "User registered successfully", user: userInfo });
   } catch (error) {
     console.error(`Error registering user: ${error}`);
     res.status(500).json({ message: "Server error" });
@@ -50,7 +64,7 @@ export const login = async (req, res) => {
     // STORE TOKEN IN HTTP-ONLY COOKIE
     res.cookie("token", token, {
       httpOnly: true, //  Cannot be accessed by JavaScript
-      // secure: true //
+      secure: true, //
       maxAge: 3600000, // 1 hour in milliseconds
     });
     const { password: userPassword, ...userInfo } = user._doc;

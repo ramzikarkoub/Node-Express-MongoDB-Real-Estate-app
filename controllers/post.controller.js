@@ -53,6 +53,32 @@ export const getPost = async (req, res) => {
   }
 };
 
+// GET ALL POSTS BY LOGGED-IN USER
+export const getUserPosts = async (req, res) => {
+  try {
+    console.log("Request user object:", req.user);
+    const userId = req.user?.id;
+    console.log("Extracted userId:", userId);
+
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+    const posts = await Post.find({ userId }).populate(
+      "userId",
+      "username email"
+    );
+    console.log("Posts found:", posts);
+
+    if (!posts || posts.length === 0) {
+      return res.status(200).json({ message: "You have no posts yet." });
+    }
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // ADD NEW PROPERTY LISTING WITH CLOUDINARY IMAGES
 
 export const addPost = async (req, res) => {
