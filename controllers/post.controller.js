@@ -1,6 +1,5 @@
 import Post from "../models/post.model.js";
 import cloudinary from "../utils/cloudinary.js";
-import fs from "fs";
 
 // GET ALL PROPERTY LISTINGS WITH FILTERING
 export const getPosts = async (req, res) => {
@@ -56,7 +55,6 @@ export const getPost = async (req, res) => {
 // GET ALL POSTS BY LOGGED-IN USER
 export const getUserPosts = async (req, res) => {
   try {
-    console.log("Request user object:", req.user);
     const userId = req.user?.id;
     console.log("Extracted userId:", userId);
 
@@ -79,8 +77,7 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
-// ADD NEW PROPERTY LISTING WITH CLOUDINARY IMAGES
-
+// ADD NEW PROPERTY LISTING )
 export const addPost = async (req, res) => {
   const {
     title,
@@ -92,15 +89,14 @@ export const addPost = async (req, res) => {
     type,
     property,
     postDetail,
-    imageUrls, // Array of Cloudinary image URLs
+    imageUrls, // Array of Cloudinary URLs
   } = req.body;
 
   try {
-    // Create New Post
     const newPost = new Post({
       title,
       price,
-      images: imageUrls, // Save Cloudinary URLs directly in MongoDB
+      images: imageUrls, //Save URLs directly in MongoDB
       address,
       city,
       bedroom,
@@ -108,11 +104,10 @@ export const addPost = async (req, res) => {
       type,
       property,
       postDetail,
-      userId: req.user.id, // User who created the post
+      userId: req.user.id,
     });
 
     await newPost.save();
-
     res
       .status(201)
       .json({ message: "Post created successfully", post: newPost });
@@ -121,8 +116,7 @@ export const addPost = async (req, res) => {
   }
 };
 
-// UPDATE PROPERTY LISTING
-
+//  UPDATE PROPERTY LISTING
 export const updatePost = async (req, res) => {
   const { id } = req.params;
 
@@ -134,7 +128,6 @@ export const updatePost = async (req, res) => {
 
     if (!updatedPost)
       return res.status(404).json({ message: "Post not found" });
-
     res
       .status(200)
       .json({ message: "Post updated successfully", post: updatedPost });
