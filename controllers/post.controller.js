@@ -53,38 +53,13 @@ export const getPost = async (req, res) => {
 };
 
 // GET ALL POSTS BY LOGGED-IN USER
-// export const getUserPosts = async (req, res) => {
-//   try {
-//     const userId = req.user?.id;
-//     console.log("Extracted userId:", userId);
-
-//     if (!userId) return res.status(401).json({ message: "Unauthorized" });
-
-//     const posts = await Post.find({ userId }).populate(
-//       "userId",
-//       "username email"
-//     );
-//     console.log("Posts found:", posts);
-
-//     if (!posts || posts.length === 0) {
-//       return res.status(200).json({ message: "You have no posts yet." });
-//     }
-
-//     res.status(200).json(posts);
-//   } catch (error) {
-//     console.error("Error fetching user posts:", error);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
-
-// ✅ Backend: Apply filters when fetching user posts
 export const getUserPosts = async (req, res) => {
   try {
     const { location, type, property, minPrice, maxPrice, bedroom } = req.query;
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
-    const filters = { userId }; // ✅ Filter by userId
+    const filters = { userId }; // Filter by userId
     if (location) filters.city = { $regex: location, $options: "i" };
     if (type && type !== "any") filters.type = type;
     if (property && property !== "any") filters.property = property;
