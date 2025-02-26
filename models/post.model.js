@@ -29,6 +29,13 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Optimized Indexes
+postSchema.index({ title: "text", address: "text", city: "text" }); // Full-text search
+postSchema.index({ type: 1, property: 1 }); // Filtering
+postSchema.index({ price: 1 }); // Sorting
+postSchema.index({ createdAt: -1 }); // Recent listings
+postSchema.index({ userId: 1 }); // User listings
+
 const Post = mongoose.model("Post", postSchema);
 
 export default Post;
