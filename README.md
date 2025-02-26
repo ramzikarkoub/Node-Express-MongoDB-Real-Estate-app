@@ -2,9 +2,9 @@
 
 #### A modern real estate platform where users can browse, buy, sell, and rent properties.
 
-<img src="./public/Screenshot1.png" alt="Screenshot of Ramzillow" style="width:49%;"/>
+<img src="./assets/Screenshot1.png" alt="Screenshot of Ramzillow" style="width:49%;"/>
 
-<img src="./public/Screenshot2.png" alt="Screenshot of Ramzillow" style="width:49%;"/>
+<img src="./assets//Screenshot2.png" alt="Screenshot of Ramzillow" style="width:49%;"/>
 
 ## Description
 
@@ -67,7 +67,7 @@ Ramzillow is a **full-stack real estate platform** where users can **search for 
 - The **User** model stores account details and references property listings.
 - The **Post** model stores property details with indexes for fast querying.
 
-<img src="./src/assets/diagram.png" alt="ERD Diagram for Ramzillow"/>
+<img src="./assets/diagram.png" alt="ERD Diagram for Ramzillow"/>
 
 ## <a name="nextsteps"></a>Project Next Steps
 
