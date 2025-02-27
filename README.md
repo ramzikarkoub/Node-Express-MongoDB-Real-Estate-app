@@ -1,97 +1,73 @@
-# Ramzillow - Real Estate Marketplace
+# Ramzillow - Real Estate Marketplace (Backend)
 
-#### A modern real estate platform where users can browse, buy, sell, and rent properties.
-
-<img src="./assets/Screenshot1.png" alt="Screenshot of Ramzillow" style="width:49%;"/>
-
-<img src="./assets//Screenshot2.png" alt="Screenshot of Ramzillow" style="width:49%;"/>
+#### A Node.js backend API for managing real estate listings, authentication, and user data.
 
 ## Description
 
-Ramzillow is a **full-stack real estate platform** where users can **search for properties, list their own properties, and manage their listings**. The application supports **property filtering, secure authentication, image uploads via Cloudinary, and an intuitive dashboard** for managing posts.
+This is the **backend for Ramzillow**, built using **Node.js and Express**. It handles **user authentication, property listings, image uploads, and data storage** using **MongoDB**.
 
 ## Table of Contents
 
 - [Technologies Used](#technologiesused)
 - [Features](#features)
-- [Wireframe & Design](#design)
-- [ERD & DB Structure](#erd)
+- [Database Schema & ERD](#erd)
 - [Project Next Steps](#nextsteps)
-- [Deployed App](#deployment)
+- [Deployed API](#deployment)
 - [About the Author](#author)
 
 ## <a name="technologiesused"></a>Technologies Used
 
-### Frontend:
-
-- React.js
-- React Router
-- Context API
-- HTML/CSS
-
-### Backend:
-
-- Node.js
-- Express.js
-- MongoDB & Mongoose
-- Cloudinary (for image storage)
-- JWT Authentication
-- Bcrypt for password hashing
-
-### Other Tools:
-
-- Axios (for API calls)
-- Vite (React setup)
-- Dotenv (for environment variables)
+- **Node.js** (Backend runtime)
+- **Express.js** (Web framework)
+- **MongoDB & Mongoose** (Database & ORM)
+- **JWT Authentication** (Secure login)
+- **Bcrypt.js** (Password hashing)
+- **Cloudinary** (Image storage)
+- **Cors & dotenv** (Security & configuration)
 
 ## <a name="features"></a>Features
 
-### ✅ Users can:
+### ✅ API Supports:
 
-✔ **Search for properties** using filters such as location, price range, bedrooms, and type.  
-✔ **List their own properties** for sale or rent, with image uploads.  
-✔ **Edit or delete their own listings** from the **dashboard**.  
-✔ **Secure login and registration** with JWT authentication.  
-✔ **Save favorite properties** for later (future feature).  
-✔ **View property details** on a separate page.
+✔ **User authentication (JWT-based)**  
+✔ **CRUD operations for property listings**  
+✔ **Filtering, sorting, and pagination for properties**  
+✔ **Secure image uploads via Cloudinary**  
+✔ **Indexing for optimized queries**
 
-## <a name="design"></a>Wireframe & Design
-
-- **Inspiration:** Modern real estate platforms like Zillow and Redfin.
-- **Design:** Clean and professional, using **Poppins font** for typography and a **blue, gray, and gold color palette**.
-
-## <a name="erd"></a>ERD & Database Structure
+## <a name="erd"></a>Database Schema & ERD
 
 **Entity Relationship Diagram (ERD)**
 
-- The **User** model stores account details and references property listings.
-- The **Post** model stores property details with indexes for fast querying.
+- **User Model**: Stores user credentials and references property listings.
+- **Post Model**: Stores property details with **indexes** for fast searching.
 
 <img src="./assets/diagram.png" alt="ERD Diagram for Ramzillow"/>
 
 ## <a name="nextsteps"></a>Project Next Steps
 
-### 🚀 Upcoming Features:
+🚀 **Upcoming Features:**
 
-- ✅ **Favorite Listings**: Users can save properties for later.
-- ✅ **User Messaging System**: Direct contact between buyers and sellers.
-- ✅ **Payment Integration**: Add Stripe for online deposits and payments.
-- ✅ **Google Maps API**: Display property locations on an interactive map.
-- ✅ **Admin Panel**: Moderation tools for managing listings and users.
+- ✅ **User Messaging System**: Contact property owners via messages.
+- ✅ **Payment Integration**: Add Stripe for online deposits.
+- ✅ **Admin Panel**: Moderation tools for managing listings.
 
-## <a name="deployment"></a>Deployed Link
+## <a name="deployment"></a>Deployed API
 
-🔗 **Live Site:** [Ramzillow](https://ramzillow.com)  
-🔗 **GitHub Repository - Frontend:** [GitHub Repo](https://github.com/ramzikarkoub/React---Real-Estate-App)  
+🔗 **Live API:** [Ramzillow Backend](https://ramzillow-real-estate-backend.onrender.com/api)  
 🔗 **GitHub Repository - Backend:** [GitHub Repo](https://github.com/ramzikarkoub/Real-Estate---Node-Express-MongoDB)
 
-## <a name="author"></a>About The Author
+🔗 **GitHub Repository - Frontend:** [GitHub Repo](https://github.com/ramzikarkoub/React---Real-Estate-App)
 
-I am a **full-stack developer** passionate about creating practical and impactful web applications. **Ramzillow** is my attempt at revolutionizing real estate with a modern, user-friendly interface and powerful backend technology.
+### **Run Locally**
 
-🔗 [LinkedIn](https://www.linkedin.com/in/ramzikarkoub/)  
-🔗 [Portfolio](https://www.ramzikarkoub.com/)
+```sh
+git clone https://github.com/ramzikarkoub/Real-Estate---Node-Express-MongoDB.git
+cd backend
+npm install
+npm run dev
+```
 
-## Special Mention: Supporters of the Build
+```
 
-- **Developer:** [Ramzi Karkoub](https://www.linkedin.com/in/ramzikarkoub/)
+```
