@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import Post from "./models/post.model.js"; // Adjust the path to your Post model
-import data from "./fake_posts.js"; // Adjust the path to your fake data
+import Post from "./models/post.model.js";
+import data from "./fake_posts.js";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const seedDB = async () => {
   try {
@@ -12,7 +12,7 @@ const seedDB = async () => {
       useUnifiedTopology: true,
     });
 
-    // Optional: Clear existing posts before seeding
+    //  Clear existing posts before seeding
     await Post.deleteMany();
 
     // Insert the fake data
