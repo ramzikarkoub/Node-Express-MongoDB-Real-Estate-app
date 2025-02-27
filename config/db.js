@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const db = process.env.MONGOURI;
+const db = process.env.MONGO_URI;
 
 const connectDB = async () => {
   try {
