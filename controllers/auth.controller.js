@@ -1,3 +1,102 @@
+// import bcrypt from "bcryptjs";
+// import jwt from "jsonwebtoken";
+// import User from "../models/user.model.js";
+
+// // REGISTER USER
+// export const register = async (req, res) => {
+//   const { username, email, password } = req.body;
+
+//   try {
+//     // CHECK IF USER ALREADY EXISTS
+//     const existingUser = await User.findOne({ email });
+//     if (existingUser)
+//       return res.status(400).json({ message: "User already exists" });
+
+//     // HASH THE PASSWORD
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     // CREATE NEW USER AND SAVE TO DB
+//     const newUser = new User({ username, email, password: hashedPassword });
+//     await newUser.save();
+//     const { password: userPassword, ...userInfo } = newUser._doc;
+
+//     // Generate JWT Token
+//     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+//       expiresIn: "1h",
+//     });
+
+//     //Store Token in HTTP-only Cookie
+//     res.cookie("token", token, {
+//       httpOnly: true,
+//       secure: true,
+//       maxAge: 3600000, // 1 hour
+//     });
+
+//     // Send User Info Without Password
+//     res
+//       .status(201)
+//       .json({ message: "User registered successfully", user: userInfo });
+//   } catch (error) {
+//     console.error(`Error registering user: ${error}`);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+// // LOGIN USER
+// export const login = async (req, res) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     // CHECK IF USER EXISTS
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(400).json({ message: "Invalid credentials" });
+
+//     // VERIFY PASSWORD
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch)
+//       return res.status(400).json({ message: "Invalid credentials" });
+
+//     // GENERATE JWT TOKEN
+//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+//       expiresIn: "1h",
+//     });
+
+//     // STORE TOKEN IN HTTP-ONLY COOKIE
+//     res.cookie("token", token, {
+//       httpOnly: true, //  Cannot be accessed by JavaScript
+//       secure: true, //
+//       maxAge: 3600000, // 1 hour in milliseconds
+//     });
+//     const { password: userPassword, ...userInfo } = user._doc;
+
+//     res.status(200).json(userInfo); //  Send user info without password
+//   } catch (error) {
+//     console.error(`Error logging in: ${error}`);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+// // LOGOUT USER
+// export const logout = (req, res) => {
+//   res.clearCookie("token", {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: "strict",
+//   });
+//   res.status(200).json({ message: "Logout successful" });
+// };
+
+// // Check if user is authenticated and return user data
+// export const getMe = async (req, res) => {
+//   try {
+//     const user = await User.findById(req.user.id).select("-password");
+//     if (!user) return res.status(404).json({ message: "User not found" });
+//     res.json(user);
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
@@ -20,24 +119,27 @@ export const register = async (req, res) => {
     await newUser.save();
     const { password: userPassword, ...userInfo } = newUser._doc;
 
-    // Generate JWT Token
+    // GENERATE JWT TOKEN
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
-    //Store Token in HTTP-only Cookie
+    // STORE TOKEN IN HTTP-ONLY COOKIE
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production", // Secure only in production
+      sameSite: "None", // Allows cross-origin authentication
       maxAge: 3600000, // 1 hour
     });
 
-    // Send User Info Without Password
+    console.log(`✅ User registered: ${email}`);
+
+    // SEND USER INFO WITHOUT PASSWORD
     res
       .status(201)
       .json({ message: "User registered successfully", user: userInfo });
   } catch (error) {
-    console.error(`Error registering user: ${error}`);
+    console.error(`❌ Error registering user: ${error}`);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -63,15 +165,18 @@ export const login = async (req, res) => {
 
     // STORE TOKEN IN HTTP-ONLY COOKIE
     res.cookie("token", token, {
-      httpOnly: true, //  Cannot be accessed by JavaScript
-      secure: true, //
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Secure only in production
+      sameSite: "None", // Allows cross-origin authentication
       maxAge: 3600000, // 1 hour in milliseconds
     });
-    const { password: userPassword, ...userInfo } = user._doc;
 
-    res.status(200).json(userInfo); //  Send user info without password
+    console.log(`✅ User logged in: ${email}`);
+
+    const { password: userPassword, ...userInfo } = user._doc;
+    res.status(200).json(userInfo);
   } catch (error) {
-    console.error(`Error logging in: ${error}`);
+    console.error(`❌ Error logging in: ${error}`);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -80,19 +185,24 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: true,
-    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
   });
+
+  console.log(`✅ User logged out`);
   res.status(200).json({ message: "Logout successful" });
 };
 
-// Check if user is authenticated and return user data
+// CHECK IF USER IS AUTHENTICATED AND RETURN USER DATA
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
+
+    console.log(`✅ Authenticated user: ${user.email}`);
     res.json(user);
   } catch (error) {
+    console.error(`❌ Error fetching user data: ${error}`);
     res.status(500).json({ message: "Server error" });
   }
 };
