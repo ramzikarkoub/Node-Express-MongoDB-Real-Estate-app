@@ -19,6 +19,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://ramzillow-ramzikarkoubs-projects.vercel.app",
+      "https://ramzillow-7mtm8kt0d-ramzikarkoubs-projects.vercel.app/",
     ],
     credentials: true,
   })
