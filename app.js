@@ -16,7 +16,10 @@ app.use(cookieParser());
 app.use(express.json()); // Parse JSON bodies
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://ramzillow-ramzikarkoubs-projects.vercel.app/",
+    ],
     credentials: true,
   })
 );
