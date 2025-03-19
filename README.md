@@ -55,8 +55,6 @@ This is the **backend for Ramzillow**, built using **Node.js and Express**. It h
 ## <a name="deployment"></a>Deployed API
 
 🔗 **Live Site:** [Ramzillow](https://ramzillow-ramzikarkoubs-projects.vercel.app/)  
-🔗 **GitHub Repository - Backend:** [GitHub Repo](https://github.com/ramzikarkoub/Real-Estate---Node-Express-MongoDB)
-
 🔗 **GitHub Repository - Frontend:** [GitHub Repo](https://github.com/ramzikarkoub/React---Real-Estate-App)
 
 ### **Run Locally**
