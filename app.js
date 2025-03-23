@@ -28,6 +28,9 @@ app.use(
       "https://ramzillow.vercel.app",
       "https://ramzillow-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-cy71afymb-ramzikarkoubs-projects.vercel.app",
+      "https://ramzillow-gd850yjys-ramzikarkoubs-projects.vercel.app",
+      "https://ramzillow-ramzikarkoubs-projects.vercel.app",
+      "https://ramzillow-ramzikarkoub-ramzikarkoubs-projects.vercel.app",
     ],
     credentials: true, // Required for sending cookies
     methods: ["GET", "POST", "PUT", "DELETE"],
