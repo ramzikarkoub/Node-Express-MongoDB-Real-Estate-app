@@ -25,6 +25,7 @@ app.use(
       "http://localhost:5173",
       "https://ramzillow-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-7mtm8kt0d-ramzikarkoubs-projects.vercel.app",
+      "https://ramzillow.vercel.app/",
     ],
     credentials: true, // Required for sending cookies
     methods: ["GET", "POST", "PUT", "DELETE"],
