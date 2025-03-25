@@ -1,5 +1,7 @@
 # Ramzillow - Real Estate Marketplace (Backend)
 
+![Coverage Status](https://coveralls.io/repos/github/YOUR_USERNAME/YOUR_REPO/badge.svg?branch=main)
+
 #### A Node.js backend API for managing real estate listings, authentication, and user data.
 
 ## Description

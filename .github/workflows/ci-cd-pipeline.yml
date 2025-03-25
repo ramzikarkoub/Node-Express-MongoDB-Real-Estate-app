@@ -30,6 +30,11 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Deploy to Render
         if: github.ref == 'refs/heads/main' && success()
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}

@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest --coverage"
   },
   "author": "Ramzi Karkoub",
   "license": "ISC",
@@ -24,7 +24,9 @@
     "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.26.9",
     "babel-jest": "^29.7.0",
+    "coveralls": "^3.1.1",
     "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
     "mongodb-memory-server": "^10.1.4",
     "supertest": "^7.1.0"
   }
