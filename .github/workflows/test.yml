@@ -23,3 +23,7 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Deploy to Render
+        if: success() # only runs if tests pass
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
