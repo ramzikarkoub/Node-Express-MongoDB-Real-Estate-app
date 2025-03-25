@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "Backend for real estate app",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "NODE_ENV=test jest"
   },
   "author": "Ramzi Karkoub",
   "license": "ISC",

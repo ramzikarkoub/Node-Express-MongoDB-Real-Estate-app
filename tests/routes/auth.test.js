@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
 import request from "supertest";
 import mongoose from "mongoose";
-import { server } from "../../app.js";
+import { app, server } from "../../app.js";
 import User from "../../models/user.model.js";
 import jwt from "jsonwebtoken";
 
-const api = request(server);
+const api = request(app);
 
 describe("Authentication Routes", () => {
   beforeEach(async () => {
@@ -121,5 +121,5 @@ describe("Authentication Routes", () => {
 
 afterAll(async () => {
   await mongoose.disconnect();
-  server.close(); // properly close the server
+  if (server) server.close();
 });

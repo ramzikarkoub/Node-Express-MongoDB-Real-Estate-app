@@ -7,18 +7,15 @@ import cookieParser from "cookie-parser";
 import authRoute from "./routes/auth.route.js";
 import postRoute from "./routes/post.route.js";
 
-// Load environment variables
 dotenv.config();
+connectDB();
 
-// Initialize app
 const app = express();
 
-// Middleware (Order Matters)
-app.use(express.json()); // Parses JSON body before using routes
-app.use(cookieParser()); // Parses HTTP-Only cookies
-app.use(morgan("dev")); // Logs requests
-
-// CORS Configuration
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: [
@@ -33,23 +30,22 @@ app.use(
       "https://ramzillow-ramzikarkoub-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-o0rz80xs7-ramzikarkoubs-projects.vercel.app",
     ],
-    credentials: true, // Required for sending cookies
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Connect to Database
-connectDB();
-
 // Routes
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 
-// Start Server
-const PORT = process.env.PORT || 4000;
-const server = app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+let server;
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 4000;
+  server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
 export { app, server };
