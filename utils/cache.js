@@ -1,16 +1,19 @@
 import { createClient } from "redis";
-import dotenv from "dotenv";
-dotenv.config();
 
-const client = createClient({
-  url: process.env.REDIS_URL || "redis://localhost:6379",
-});
+const redisUrl = process.env.REDIS_URL;
 
-if (process.env.NODE_ENV !== "test") {
-  client
-    .connect()
-    .then(() => console.log("✅ Redis connected successfully"))
-    .catch((err) => console.error("❌ Redis connection error:", err));
+if (!redisUrl) {
+  throw new Error("REDIS_URL not defined in .env");
 }
 
-export default client;
+const redisClient = createClient({ url: redisUrl });
+
+redisClient.on("error", (err) => {
+  console.error("Redis connection error:", err);
+});
+
+redisClient.connect().then(() => {
+  console.log("Redis connected");
+});
+
+export default redisClient;

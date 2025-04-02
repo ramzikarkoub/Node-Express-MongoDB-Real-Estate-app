@@ -1,10 +1,15 @@
 import Post from "../models/post.model.js";
 import cloudinary from "../utils/cloudinary.js";
-import client from "../utils/cache.js";
 
+import redisClient from "../utils/cache.js";
+
+// Clear Redis cache
 const clearCache = async () => {
   try {
-    await client.flushAll(); // Clears the entire Redis cache
+    if (!redisClient.isOpen) {
+      await redisClient.connect();
+    }
+    await redisClient.flushAll();
   } catch (err) {
     console.error("Redis cache clear error:", err);
   }

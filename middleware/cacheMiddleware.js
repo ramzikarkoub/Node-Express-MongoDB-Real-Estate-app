@@ -1,10 +1,10 @@
-import client from "../utils/cache.js";
+import redisClient from "../utils/cache.js";
 
 export const cachePosts = async (req, res, next) => {
   try {
     const cacheKey = `posts:${JSON.stringify(req.query)}`;
 
-    const cachedData = await client.get(cacheKey);
+    const cachedData = await redisClient.get(cacheKey);
 
     if (cachedData) {
       console.log("🚀 Returning cached data");
@@ -13,7 +13,7 @@ export const cachePosts = async (req, res, next) => {
 
     res.sendResponse = res.json;
     res.json = async (body) => {
-      await client.setEx(cacheKey, 3600, JSON.stringify(body)); // cache for 1 hour
+      await redisClient.setEx(cacheKey, 3600, JSON.stringify(body)); // ✅ Correct variable
       res.sendResponse(body);
     };
 
