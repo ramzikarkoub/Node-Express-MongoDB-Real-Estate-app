@@ -6,10 +6,7 @@ import redisClient from "../utils/cache.js";
 // Clear Redis cache
 const clearCache = async () => {
   try {
-    if (!redisClient.isOpen) {
-      await redisClient.connect();
-    }
-    await redisClient.flushAll();
+    await redisClient.flushAll(); // clears all cache
   } catch (err) {
     console.error("Redis cache clear error:", err);
   }

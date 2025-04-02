@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import redisClient from "../utils/cache.js";
 
 dotenv.config();
 
@@ -22,4 +23,9 @@ afterEach(async () => {
 afterAll(async () => {
   await mongoose.disconnect();
   if (mongoServer) await mongoServer.stop();
+
+  if (redisClient) {
+    await redisClient.quit();
+    console.log("🔌 Redis connection closed after tests");
+  }
 });
