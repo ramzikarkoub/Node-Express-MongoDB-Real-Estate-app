@@ -1,32 +1,25 @@
-// tests/setup.js
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { MongoMemoryServer } from "mongodb-memory-server";
+
 dotenv.config();
 
+let mongoServer;
+
 beforeAll(async () => {
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(
-      process.env.MONGO_URI || "mongodb://localhost:27017/test-db"
-    );
-  }
+  mongoServer = await MongoMemoryServer.create();
+  const uri = mongoServer.getUri();
+  await mongoose.connect(uri);
 });
 
-afterAll(async () => {
-  if (mongoose.connection.readyState !== 1) return;
-
+afterEach(async () => {
   const collections = mongoose.connection.collections;
   for (const key in collections) {
     await collections[key].deleteMany({});
   }
-  await mongoose.connection.close();
 });
 
 afterAll(async () => {
-  if (mongoose.connection.readyState !== 1) return;
-
-  const collections = mongoose.connection.collections;
-  for (const key in collections) {
-    await collections[key].deleteMany({});
-  }
   await mongoose.disconnect();
+  if (mongoServer) await mongoServer.stop();
 });
