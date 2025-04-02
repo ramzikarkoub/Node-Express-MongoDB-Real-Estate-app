@@ -20,3 +20,13 @@ afterAll(async () => {
   }
   await mongoose.connection.close();
 });
+
+afterAll(async () => {
+  if (mongoose.connection.readyState !== 1) return;
+
+  const collections = mongoose.connection.collections;
+  for (const key in collections) {
+    await collections[key].deleteMany({});
+  }
+  await mongoose.disconnect();
+});

@@ -48,6 +48,7 @@ export const getPost = async (req, res) => {
 
     res.status(200).json(post);
   } catch (error) {
+    console.error("Error fetching post:", error); // Add logging for debugging
     res.status(500).json({ message: "Server error" });
   }
 };
