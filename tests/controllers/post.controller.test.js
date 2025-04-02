@@ -1,6 +1,3 @@
-// ✅ TEST FILE FOR POST CONTROLLER
-// tests/controllers/post.controller.test.js
-
 import request from "supertest";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
@@ -9,7 +6,7 @@ import app from "../../app.js";
 import Post from "../../models/post.model.js";
 import User from "../../models/user.model.js";
 
-jest.setTimeout(30000); // Increase timeout for MongoMemoryServer
+jest.setTimeout(30000);
 
 describe("Post Controller", () => {
   let mongoServer;
@@ -25,7 +22,7 @@ describe("Post Controller", () => {
     const user = await User.create({
       username: "testuser",
       email: "testuser@example.com",
-      password: "hashed", // Not used in these tests
+      password: "hashed",
     });
 
     userId = user._id;
@@ -157,7 +154,7 @@ describe("Post Controller", () => {
       .send({ title: "Updated Title", price: 160000 });
 
     expect(res.status).toBe(200);
-    expect(res.body.title).toBe("Updated Title");
+    expect(res.body.post.title).toBe("Updated Title");
   });
 
   it("fetches posts for authenticated user", async () => {
@@ -169,7 +166,7 @@ describe("Post Controller", () => {
       bedroom: 3,
       bathroom: 2,
       type: "buy",
-      property: "villa",
+      property: "house",
       postDetail: { desc: "My home" },
       images: [],
       userId,
