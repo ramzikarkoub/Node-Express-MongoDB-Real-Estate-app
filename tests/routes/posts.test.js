@@ -1,40 +1,44 @@
 import request from "supertest";
-import { app } from "../../app.js";
+import app from "../../app.js";
 import Post from "../../models/post.model.js";
 import User from "../../models/user.model.js";
 import jwt from "jsonwebtoken";
+import "../setup";
 
 const api = request(app);
+
 let token, userId;
 
 beforeAll(async () => {
   const user = await User.create({
     username: "testuser",
-    email: "testuser@example.com",
+    email: "test@example.com",
     password: "Password123",
   });
 
   userId = user._id;
-  token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+  token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
 });
 
-beforeEach(async () => {
+afterEach(async () => {
   await Post.deleteMany({});
 });
 
 describe("Posts Routes", () => {
   it("fetches all posts", async () => {
     await Post.create({
-      title: "House Example",
-      price: 150000,
+      title: "Test Post",
+      price: 100000,
       address: "123 Main St",
       city: "Charlotte",
       bedroom: 3,
       bathroom: 2,
       type: "buy",
       property: "house",
-      postDetail: { desc: "Nice property" },
-      images: ["http://image.url/image.jpg"],
+      postDetail: { desc: "Great house" },
+      images: ["http://img.com/test.jpg"],
       userId,
     });
 

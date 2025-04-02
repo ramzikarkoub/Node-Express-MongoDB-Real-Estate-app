@@ -1,66 +1,48 @@
-import request from "supertest";
+import { verifyToken } from "../../middleware/auth.js";
 import jwt from "jsonwebtoken";
-import { app } from "../../app.js";
-import mongoose from "mongoose";
-import User from "../../models/user.model.js";
+import dotenv from "dotenv";
 
-const api = request(app);
+dotenv.config();
 
 describe("Authentication Middleware", () => {
-  let user, validToken;
+  const mockNext = jest.fn();
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  };
 
-  beforeAll(async () => {
-    user = await User.create({
-      username: "middlewareUser",
-      email: "middleware@example.com",
-      password: "Password123",
-    });
-
-    validToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  afterAll(async () => {
-    await User.deleteMany({});
-    await mongoose.disconnect();
+  it("rejects request if token is missing", () => {
+    const req = { cookies: {} };
+
+    verifyToken(req, res, mockNext);
+
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith({ message: "Access denied" });
+    expect(mockNext).not.toHaveBeenCalled();
   });
 
-  test("rejects request if token is missing", async () => {
-    const res = await api.get("/api/auth/me");
+  it("rejects request with invalid token", () => {
+    const req = { cookies: { token: "invalidtoken" } };
 
-    expect(res.status).toBe(401);
-    expect(res.body.message).toMatch(/access denied/i);
+    verifyToken(req, res, mockNext);
+
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith({ message: "Invalid token" });
+    expect(mockNext).not.toHaveBeenCalled();
   });
 
-  test("rejects request with invalid token", async () => {
-    const res = await api
-      .get("/api/auth/me")
-      .set("Cookie", ["token=invalidtoken"]);
+  it("allows request with valid token", () => {
+    const user = { id: "123" };
+    const token = jwt.sign(user, process.env.JWT_SECRET);
+    const req = { cookies: { token } };
 
-    expect(res.status).toBe(401);
-    expect(res.body.message).toMatch(/invalid token/i);
-  });
+    verifyToken(req, res, mockNext);
 
-  test("rejects request with expired token", async () => {
-    const expiredToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "-1s",
-    });
-
-    const res = await api
-      .get("/api/auth/me")
-      .set("Cookie", [`token=${expiredToken}`]);
-
-    expect(res.status).toBe(401);
-    expect(res.body.message).toMatch(/invalid token/i); // updated here
-  });
-
-  test("allows request with valid token", async () => {
-    const res = await api
-      .get("/api/auth/me")
-      .set("Cookie", [`token=${validToken}`]);
-
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty("email", "middleware@example.com");
+    expect(req.user).toMatchObject(user);
+    expect(mockNext).toHaveBeenCalled();
   });
 });

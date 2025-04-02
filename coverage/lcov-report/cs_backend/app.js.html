@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">73.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>11/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/4</span>
+                <span class='fraction'>3/6</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">73.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>11/15</span>
             </div>
         
             
@@ -114,7 +114,11 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -124,17 +128,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,20 +169,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from "express";
-import connectDB from "./config/db.js";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
+import connectDB from "./config/db.js";
 import authRoute from "./routes/auth.route.js";
 import postRoute from "./routes/post.route.js";
 &nbsp;
-dotenv.config();
-connectDB();
-&nbsp;
 const app = express();
 &nbsp;
+// Connect to DB ONLY if not testing
+<span class="missing-if-branch" title="if path not taken" >I</span>if (process.env.NODE_ENV !== "test") {
+<span class="cstat-no" title="statement not covered" >  connectDB();</span>
+}
+app.set("port", process.env.PORT || <span class="branch-1 cbranch-no" title="branch not covered" >5000)</span>;
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
@@ -190,10 +198,8 @@ app.use(
       "https://ramzillow-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-7mtm8kt0d-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow.vercel.app",
-      "https://ramzillow-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-cy71afymb-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-gd850yjys-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-ramzikarkoub-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-o0rz80xs7-ramzikarkoubs-projects.vercel.app",
     ],
@@ -207,15 +213,15 @@ app.use(
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 &nbsp;
-let server;
+// Start server ONLY if not testing
 <span class="missing-if-branch" title="if path not taken" >I</span>if (process.env.NODE_ENV !== "test") {
-  const PORT = <span class="cstat-no" title="statement not covered" >process.env.PORT || 4000;</span>
-<span class="cstat-no" title="statement not covered" >  server = app.listen(PORT, <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const PORT = <span class="cstat-no" title="statement not covered" >app.get("port");</span>
+<span class="cstat-no" title="statement not covered" >  app.listen(PORT, <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    console.log(`Server is running on port ${PORT}`);</span>
   });
 }
 &nbsp;
-export { app, server };
+export default app;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -223,7 +229,7 @@ export { app, server };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-26T03:38:37.864Z
+                at 2025-04-02T02:47:21.844Z
             </div>
         <script src="../prettify.js"></script>
         <script>
