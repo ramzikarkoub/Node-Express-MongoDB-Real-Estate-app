@@ -1,6 +1,12 @@
 import request from "supertest";
 import app from "../app.js";
 
+jest.mock("../utils/cache.js", () => ({
+  get: jest.fn(),
+  setEx: jest.fn(),
+  flushAll: jest.fn(),
+}));
+
 describe("App.js Integration", () => {
   it("should respond with 404 for unknown routes", async () => {
     const res = await request(app).get("/unknown");

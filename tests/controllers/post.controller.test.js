@@ -8,6 +8,13 @@ import User from "../../models/user.model.js";
 
 jest.setTimeout(30000);
 
+// Mock Redis
+jest.mock("../../utils/cache.js", () => ({
+  get: jest.fn(),
+  setEx: jest.fn(),
+  flushAll: jest.fn(),
+}));
+
 describe("Post Controller", () => {
   let mongoServer;
   let token;

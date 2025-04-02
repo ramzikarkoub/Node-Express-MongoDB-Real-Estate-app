@@ -9,6 +9,13 @@ const api = request(app);
 
 let token, userId;
 
+// Mock Redis
+jest.mock("../../utils/cache.js", () => ({
+  get: jest.fn(),
+  setEx: jest.fn(),
+  flushAll: jest.fn(),
+}));
+
 beforeAll(async () => {
   const user = await User.create({
     username: "testuser",

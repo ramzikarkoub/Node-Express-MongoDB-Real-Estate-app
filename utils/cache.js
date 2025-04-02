@@ -6,9 +6,11 @@ const client = createClient({
   url: process.env.REDIS_URL || "redis://localhost:6379",
 });
 
-client
-  .connect()
-  .then(() => console.log("Redis connected successfully"))
-  .catch((err) => console.error("Redis connection error:", err));
+if (process.env.NODE_ENV !== "test") {
+  client
+    .connect()
+    .then(() => console.log("✅ Redis connected successfully"))
+    .catch((err) => console.error("❌ Redis connection error:", err));
+}
 
 export default client;
