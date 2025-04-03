@@ -1,5 +1,7 @@
 # Ramzillow - Real Estate Marketplace (Backend)
 
+![Coverage Status](https://coveralls.io/repos/github/ramzikarkoub/Node-Express-MongoDB-Real-Estate-app/badge.svg?branch=main)
+
 #### A Node.js backend API for managing real estate listings, authentication, and user data.
 
 ## Description

@@ -9,8 +9,9 @@ import {
 } from "../controllers/post.controller.js";
 import { verifyToken } from "../middleware/auth.js";
 const router = express.Router();
+import { cachePosts } from "../middleware/cacheMiddleware.js";
 
-router.get("/", getPosts); // Get all posts
+router.get("/", cachePosts, getPosts); // Get all posts
 router.get("/user", verifyToken, getUserPosts); // Get all user's Posts
 router.get("/:id", getPost); // Get a single post
 router.post("/", verifyToken, addPost); // Add a new post / add up to 5 images

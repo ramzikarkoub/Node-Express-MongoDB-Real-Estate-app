@@ -1,53 +1,56 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
-import connectDB from "./config/db.js";
 import cors from "cors";
 import morgan from "morgan";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
+import connectDB from "./config/db.js";
 import authRoute from "./routes/auth.route.js";
 import postRoute from "./routes/post.route.js";
 
-// Load environment variables
-dotenv.config();
-
-// Initialize app
 const app = express();
 
-// Middleware (Order Matters)
-app.use(express.json()); // Parses JSON body before using routes
-app.use(cookieParser()); // Parses HTTP-Only cookies
-app.use(morgan("dev")); // Logs requests
+// Connect to DB ONLY if not testing
+if (process.env.NODE_ENV !== "test") {
+  connectDB();
+}
+app.set("port", process.env.PORT || 5000);
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(morgan("dev"));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ramzillow-ramzikarkoubs-projects.vercel.app", // main
+  "https://ramzillow-ramzikarkoub-ramzikarkoubs-projects.vercel.app", // feature/in-progress
+];
 
-// CORS Configuration
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://ramzillow-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-7mtm8kt0d-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow.vercel.app",
-      "https://ramzillow-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-cy71afymb-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-gd850yjys-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-ramzikarkoub-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-o0rz80xs7-ramzikarkoubs-projects.vercel.app",
-    ],
-    credentials: true, // Required for sending cookies
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS: " + origin));
+      }
+    },
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Connect to Database
-connectDB();
-
 // Routes
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 
-// Start Server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(` Server is running on port ${PORT}`);
-});
+// Start server ONLY if not testing
+if (process.env.NODE_ENV !== "test") {
+  const PORT = app.get("port");
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+export default app;

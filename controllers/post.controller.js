@@ -1,6 +1,17 @@
 import Post from "../models/post.model.js";
 import cloudinary from "../utils/cloudinary.js";
 
+import redisClient from "../utils/cache.js";
+
+// Clear Redis cache
+const clearCache = async () => {
+  try {
+    await redisClient.flushAll(); // clears all cache
+  } catch (err) {
+    console.error("Redis cache clear error:", err);
+  }
+};
+
 // GET ALL PROPERTY LISTINGS WITH FILTERING
 export const getPosts = async (req, res) => {
   try {
@@ -8,23 +19,13 @@ export const getPosts = async (req, res) => {
 
     const filters = {};
 
-    // Location (case-insensitive)
     if (location) filters.city = { $regex: location, $options: "i" };
-
-    // Type (rent or buy)
     if (type && type !== "any") filters.type = type;
-
-    // Property (apartment, house, condo, land)
     if (property && property !== "any") filters.property = property;
-
-    // Price range
     if (minPrice) filters.price = { $gte: Number(minPrice) };
     if (maxPrice) filters.price = { ...filters.price, $lte: Number(maxPrice) };
-
-    // Number of bedrooms
     if (bedroom) filters.bedroom = Number(bedroom);
 
-    // Fetch posts based on filters
     const posts = await Post.find(filters).sort({ createdAt: -1 });
 
     if (posts.length === 0)
@@ -38,7 +39,6 @@ export const getPosts = async (req, res) => {
 };
 
 // GET SINGLE PROPERTY LISTING BY ID
-
 export const getPost = async (req, res) => {
   const { id } = req.params;
 
@@ -48,6 +48,7 @@ export const getPost = async (req, res) => {
 
     res.status(200).json(post);
   } catch (error) {
+    console.error("Error fetching post:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -59,7 +60,7 @@ export const getUserPosts = async (req, res) => {
     const userId = req.user?.id;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
-    const filters = { userId }; // Filter by userId
+    const filters = { userId };
     if (location) filters.city = { $regex: location, $options: "i" };
     if (type && type !== "any") filters.type = type;
     if (property && property !== "any") filters.property = property;
@@ -70,13 +71,14 @@ export const getUserPosts = async (req, res) => {
     const posts = await Post.find(filters)
       .populate("userId", "username email")
       .sort({ createdAt: -1 });
+
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// ADD NEW PROPERTY LISTING )
+// ADD NEW PROPERTY LISTING
 export const addPost = async (req, res) => {
   const {
     title,
@@ -88,14 +90,14 @@ export const addPost = async (req, res) => {
     type,
     property,
     postDetail,
-    imageUrls, // Array of Cloudinary URLs
+    imageUrls,
   } = req.body;
 
   try {
     const newPost = new Post({
       title,
       price,
-      images: imageUrls, //Save URLs directly in MongoDB
+      images: imageUrls,
       address,
       city,
       bedroom,
@@ -107,6 +109,9 @@ export const addPost = async (req, res) => {
     });
 
     await newPost.save();
+
+    await clearCache(); // Clear Redis cache
+
     res
       .status(201)
       .json({ message: "Post created successfully", post: newPost });
@@ -115,18 +120,21 @@ export const addPost = async (req, res) => {
   }
 };
 
-//  UPDATE PROPERTY LISTING
+// UPDATE PROPERTY LISTING
 export const updatePost = async (req, res) => {
   const { id } = req.params;
 
   try {
     const updatedPost = await Post.findByIdAndUpdate(id, req.body, {
-      new: true, // Return the updated document
-      runValidators: true, // Ensure validation is applied
+      new: true,
+      runValidators: true,
     });
 
     if (!updatedPost)
       return res.status(404).json({ message: "Post not found" });
+
+    await clearCache(); // Clear Redis cache
+
     res
       .status(200)
       .json({ message: "Post updated successfully", post: updatedPost });
@@ -136,7 +144,6 @@ export const updatePost = async (req, res) => {
 };
 
 // DELETE PROPERTY LISTING AND CLOUDINARY IMAGES
-
 export const deletePost = async (req, res) => {
   const { id } = req.params;
 
@@ -144,15 +151,17 @@ export const deletePost = async (req, res) => {
     const post = await Post.findById(id);
     if (!post) return res.status(404).json({ message: "Post not found" });
 
-    // Delete Images from Cloudinary
     await Promise.all(
       post.images.map((url) => {
-        const publicId = url.split("/").pop().split(".")[0]; // Extract public ID from URL
+        const publicId = url.split("/").pop().split(".")[0];
         return cloudinary.uploader.destroy(publicId);
       })
     );
 
     await post.deleteOne();
+
+    await clearCache(); // Clear Redis cache
+
     res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });

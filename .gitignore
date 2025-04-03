@@ -1,3 +1,10 @@
 .env
 node_modules
 package-lock.json
+.env.test
+coverage/
+.vscode/
+logs/
+*.log
+npm-debug.log*
+dump.rdb
