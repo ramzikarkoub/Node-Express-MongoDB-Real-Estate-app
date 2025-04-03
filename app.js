@@ -27,6 +27,7 @@ app.use(
       "https://ramzillow-ramzikarkoubs-projects.vercel.app",
       "ramzillow-git-feature-in-progress-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-7mtm8kt0d-ramzikarkoubs-projects.vercel.app",
+      "https://ramzillow-fw1forblz-ramzikarkoubs-projects.vercel.app/",
       "https://ramzillow.vercel.app",
       "https://ramzillow-cy71afymb-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-gd850yjys-ramzikarkoubs-projects.vercel.app",
