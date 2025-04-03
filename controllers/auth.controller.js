@@ -28,9 +28,9 @@ export const register = async (req, res) => {
     // STORE TOKEN IN HTTP-ONLY COOKIE
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Secure only in production
-      sameSite: "None", // Allows cross-origin authentication
-      maxAge: 3600000, // 1 hour
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      maxAge: 3600000,
     });
 
     // SEND USER INFO WITHOUT PASSWORD
@@ -65,9 +65,9 @@ export const login = async (req, res) => {
     // STORE TOKEN IN HTTP-ONLY COOKIE
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Secure only in production
-      sameSite: "None", // Allows cross-origin authentication
-      maxAge: 3600000, // 1 hour in milliseconds
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      maxAge: 3600000,
     });
 
     const { password: userPassword, ...userInfo } = user._doc;
@@ -83,7 +83,7 @@ export const logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
   });
 
   res.status(200).json({ message: "Logout successful" });

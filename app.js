@@ -20,21 +20,21 @@ app.set("port", process.env.PORT || 5000);
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ramzillow-ramzikarkoubs-projects.vercel.app", // main
+  "https://ramzillow-ramzikarkoub-ramzikarkoubs-projects.vercel.app", // feature/in-progress
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://ramzillow-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-git-feature-in-progress-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-7mtm8kt0d-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow.vercel.app",
-      "https://ramzillow-cy71afymb-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-gd850yjys-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-ramzikarkoub-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-o0rz80xs7-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-a0y7stc0w-ramzikarkoubs-projects.vercel.app",
-      "https://ramzillow-fw1forblz-ramzikarkoubs-projects.vercel.app",
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS: " + origin));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],

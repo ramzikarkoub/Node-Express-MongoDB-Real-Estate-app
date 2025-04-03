@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1743574125632" clover="3.2.0">
-  <project timestamp="1743574125632" name="All files">
-    <metrics statements="192" coveredstatements="158" conditionals="64" coveredconditionals="36" methods="23" coveredmethods="16" elements="279" coveredelements="210" complexity="0" loc="192" ncloc="192" packages="7" files="12" classes="12"/>
+<coverage generated="1743652324837" clover="3.2.0">
+  <project timestamp="1743652324837" name="All files">
+    <metrics statements="192" coveredstatements="158" conditionals="70" coveredconditionals="39" methods="23" coveredmethods="16" elements="285" coveredelements="213" complexity="0" loc="192" ncloc="192" packages="7" files="12" classes="12"/>
     <package name="cs_backend">
       <metrics statements="15" coveredstatements="11" conditionals="6" coveredconditionals="3" methods="1" coveredmethods="0"/>
       <file name="app.js" path="/Users/ramzikarkoub/Desktop/Dev/perScholas/Capstone/cs_backend/app.js">
@@ -15,12 +15,12 @@
         <line num="21" count="5" type="stmt"/>
         <line num="22" count="5" type="stmt"/>
         <line num="23" count="5" type="stmt"/>
-        <line num="42" count="5" type="stmt"/>
-        <line num="43" count="5" type="stmt"/>
-        <line num="46" count="5" type="cond" truecount="1" falsecount="1"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
+        <line num="45" count="5" type="stmt"/>
+        <line num="46" count="5" type="stmt"/>
+        <line num="49" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
       </file>
     </package>
     <package name="cs_backend.config">
@@ -37,9 +37,9 @@
       </file>
     </package>
     <package name="cs_backend.controllers">
-      <metrics statements="111" coveredstatements="93" conditionals="50" coveredconditionals="28" methods="12" coveredmethods="11"/>
+      <metrics statements="111" coveredstatements="93" conditionals="56" coveredconditionals="31" methods="12" coveredmethods="11"/>
       <file name="auth.controller.js" path="/Users/ramzikarkoub/Desktop/Dev/perScholas/Capstone/cs_backend/controllers/auth.controller.js">
-        <metrics statements="39" coveredstatements="33" conditionals="8" coveredconditionals="6" methods="4" coveredmethods="4"/>
+        <metrics statements="39" coveredstatements="33" conditionals="14" coveredconditionals="9" methods="4" coveredmethods="4"/>
         <line num="6" count="5" type="stmt"/>
         <line num="7" count="8" type="stmt"/>
         <line num="9" count="8" type="stmt"/>
