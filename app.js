@@ -25,6 +25,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://ramzillow-ramzikarkoubs-projects.vercel.app",
+      "ramzillow-git-feature-in-progress-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow-7mtm8kt0d-ramzikarkoubs-projects.vercel.app",
       "https://ramzillow.vercel.app",
       "https://ramzillow-cy71afymb-ramzikarkoubs-projects.vercel.app",
