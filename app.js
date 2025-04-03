@@ -4,7 +4,6 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 import authRoute from "./routes/auth.route.js";
 import postRoute from "./routes/post.route.js";
