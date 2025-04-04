@@ -7,13 +7,13 @@ export const cachePosts = async (req, res, next) => {
     const cachedData = await redisClient.get(cacheKey);
 
     if (cachedData) {
-      console.log("🚀 Returning cached data");
+      console.log("Returning cached data");
       return res.status(200).json(JSON.parse(cachedData));
     }
 
     res.sendResponse = res.json;
     res.json = async (body) => {
-      await redisClient.setEx(cacheKey, 3600, JSON.stringify(body)); // ✅ Correct variable
+      await redisClient.setEx(cacheKey, 3600, JSON.stringify(body));
       res.sendResponse(body);
     };
 

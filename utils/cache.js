@@ -14,11 +14,11 @@ if (redisUrl && process.env.NODE_ENV !== "test") {
   redisClient = createClient({ url: redisUrl });
 
   redisClient.on("error", (err) => {
-    console.error("❌ Redis connection error:", err);
+    console.error("Redis connection error:", err);
   });
 
   redisClient.connect().then(() => {
-    console.log("✅ Redis connected");
+    console.log("Redis connected");
   });
 }
 
